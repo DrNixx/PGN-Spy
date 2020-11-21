@@ -88,7 +88,8 @@ void CAnalysisDlg::OnTimer(UINT_PTR nIDEvent)
 
    SYSTEM_INFO vSysInfo;
    GetSystemInfo(&vSysInfo);
-   m_iMaxThreads = (int)vSysInfo.dwNumberOfProcessors;
+   // Enable any threads for remote uci
+   m_iMaxThreads = 64; // (int)vSysInfo.dwNumberOfProcessors;
    UpdateThreadControlButtons();
 
    //do stuff
@@ -554,10 +555,20 @@ bool CAnalysisDlg::LaunchAnalyser(CGamePGN vGamePGN, int iCurThread)
          ASSERT(false); //we should have discarded this game before this point
    }
    int iBookDepthPlies = m_vEngineSettings.m_iBookDepth * 2; //double book depth, since analyser uses plies, not moves
-   sCommandLine.Format("--bookdepth %i --searchdepth %i --searchmaxtime %i --searchmintime %i --variations %i %s --setoption Hash %i --setoption Threads 1 --engine \"%s\" \"%s\"",
-      iBookDepthPlies, m_vEngineSettings.m_iSearchDepth, m_vEngineSettings.m_iMaxTime,
-      m_vEngineSettings.m_iMinTime, m_vEngineSettings.m_iNumVariations + 1, sWhiteOrBlack,
-      m_vEngineSettings.m_iHashSize, m_vEngineSettings.m_sEnginePath, vGamePGN.m_sFileName);
+   // Old CPU: if LargePage not supported by OS - set Hash value to 0 for use default
+   if (m_vEngineSettings.m_iHashSize > 0) {
+	   sCommandLine.Format("--bookdepth %i --searchdepth %i --searchmaxtime %i --searchmintime %i --variations %i %s --setoption Hash %i --setoption Threads 1 --engine \"%s\" \"%s\"",
+		   iBookDepthPlies, m_vEngineSettings.m_iSearchDepth, m_vEngineSettings.m_iMaxTime,
+		   m_vEngineSettings.m_iMinTime, m_vEngineSettings.m_iNumVariations + 1, sWhiteOrBlack,
+		   m_vEngineSettings.m_iHashSize, m_vEngineSettings.m_sEnginePath, vGamePGN.m_sFileName);
+   }
+   else {
+	   sCommandLine.Format("--bookdepth %i --searchdepth %i --searchmaxtime %i --searchmintime %i --variations %i %s --setoption Threads 1 --engine \"%s\" \"%s\"",
+		   iBookDepthPlies, m_vEngineSettings.m_iSearchDepth, m_vEngineSettings.m_iMaxTime,
+		   m_vEngineSettings.m_iMinTime, m_vEngineSettings.m_iNumVariations + 1, sWhiteOrBlack,
+		   m_vEngineSettings.m_sEnginePath, vGamePGN.m_sFileName);
+   }
+   
    if (!CreateProcess(GetAnalyserFilePath(), sCommandLine.GetBuffer(), NULL, NULL, TRUE, NORMAL_PRIORITY_CLASS, NULL, NULL, &vStartupInfo, &vProcessInfo))
    {
       sCommandLine.ReleaseBuffer();

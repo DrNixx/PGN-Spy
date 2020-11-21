@@ -111,7 +111,8 @@ void CPGNSpyDlg::DoDataExchange(CDataExchange* pDX)
    DDX_Text(pDX, IDC_MAXTIME, m_vEngineSettings.m_iMaxTime);
    DDV_MinMaxInt(pDX, m_vEngineSettings.m_iMaxTime, 1, 60000);
    DDX_Text(pDX, IDC_HASHSIZE, m_vEngineSettings.m_iHashSize);
-   DDV_MinMaxInt(pDX, m_vEngineSettings.m_iHashSize, 1, 8192);
+   // 0 - default engine value
+   DDV_MinMaxInt(pDX, m_vEngineSettings.m_iHashSize, 0, 8192);
    DDX_Text(pDX, IDC_VARIATIONS, m_vEngineSettings.m_iNumVariations);
    DDV_MinMaxInt(pDX, m_vEngineSettings.m_iNumVariations, 1, 10);
 }
