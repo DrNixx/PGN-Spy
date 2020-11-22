@@ -24,6 +24,8 @@
 #include "Analysis.h"
 #include "PGN Spy.h"
 #include "Markup.h"
+#include "ResString.h"
+#include "strings/Analysis.h"
 
 void AddStringIfNotFound(CString sValue, CStringArray &rasArray, CArray<int, int> &raiCountArray)
 {
@@ -167,7 +169,7 @@ CEngineSettings CEngineSettings::MakeCompatible(const CEngineSettings vOtherEngi
    {
       if (!rsWarning.IsEmpty())
          rsWarning += "\r\n";
-      rsWarning = "The number of variations does not match.  Only the lower number will be preserved.";
+      rsWarning = _LSA( IDS_THE_NUMBER_OF_VARIATIONS_DOES_NOT );
       vEngineSettings.m_iNumVariations = min(m_iNumVariations, vOtherEngineSettings.m_iNumVariations);
    }
 
@@ -176,19 +178,19 @@ CEngineSettings CEngineSettings::MakeCompatible(const CEngineSettings vOtherEngi
    {
       if (!rsWarning.IsEmpty())
          rsWarning += "\r\n";
-      rsWarning += "The search depth and/or time settings do not match.";
+      rsWarning += _LSA( IDS_THE_SEARCH_DEPTH_AND_OR_TIME_SETTINGS );
    }
    if (m_iHashSize != vOtherEngineSettings.m_iHashSize)
    {
       if (!rsWarning.IsEmpty())
          rsWarning += "\r\n";
-      rsWarning += "The hash size setting does not match.";
+      rsWarning += _LSA( IDS_THE_HASH_SIZE_SETTING_DOES_NOT_MATCH );
    }
    if (m_iBookDepth != vOtherEngineSettings.m_iBookDepth)
    {
       if (!rsWarning.IsEmpty())
          rsWarning += "\r\n";
-      rsWarning += "The book depth setting does not match.";
+      rsWarning += _LSA( IDS_THE_BOOK_DEPTH_SETTING_DOES_NOT_MATCH );
    }
    if (m_sEnginePath.CompareNoCase(vOtherEngineSettings.m_sEnginePath) != 0)
    {
@@ -204,7 +206,7 @@ CEngineSettings CEngineSettings::MakeCompatible(const CEngineSettings vOtherEngi
       {
          if (!rsWarning.IsEmpty())
             rsWarning += "\r\n";
-         rsWarning += "The engine does not match.";
+         rsWarning += _LSA( IDS_THE_ENGINE_DOES_NOT_MATCH );
       }
    }
    return vEngineSettings;
@@ -511,7 +513,7 @@ CString CStats::GetResultsText()
 {
    CString sLine;
    CString sResults;
-   sLine.Format("Positions: %i", m_iNumPositions);
+   sLine.Format(_LSA( IDS_POSITIONS ), m_iNumPositions);
    sResults = sLine + "\r\n";
    if (m_iNumPositions > 0)
    {
@@ -519,12 +521,12 @@ CString CStats::GetResultsText()
       for (int i = 0; i < m_iNumVariations; i++)
       {
          if (m_aiTMoves[i] == 0)
-            sLine.Format("T%i: 0/0", i+1);
+            sLine.Format(_LSA( IDS_STRING1 ), i+1);
          else
          {
             double dFrac = ((double)m_aiTValues[i] / (double)m_aiTMoves[i]);
             double dStdError = sqrt(dFrac * (1 - dFrac) / m_aiTMoves[i]) * 100;
-            sLine.Format("T%i: %i/%i; %.2f%% (std error %.2f)", i + 1, m_aiTValues[i], m_aiTMoves[i], dFrac*100.0, dStdError);
+            sLine.Format(_LSA( IDS_STD_ERROR ), i + 1, m_aiTValues[i], m_aiTMoves[i], dFrac*100.0, dStdError);
          }
          sResults += sLine + "\r\n";
       }
@@ -532,60 +534,60 @@ CString CStats::GetResultsText()
       {
          double dFrac = ((double)(m_iNumPositions - m_i0CPLoss) / (double)m_iNumPositions);
          double dStdError = sqrt(dFrac * (1 - dFrac) / m_iNumPositions) * 100;
-         sLine.Format("=0 CP loss: %i/%i; %.2f%% (std error %.2f)", m_iNumPositions - m_i0CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
+         sLine.Format(_LSA( IDS_CP_LOSS_STD_ERROR5 ), m_iNumPositions - m_i0CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
          sResults += sLine + "\r\n";
       }
       //>0 CP loss
       {
          double dFrac = ((double)m_i0CPLoss / (double)m_iNumPositions);
          double dStdError = sqrt(dFrac * (1 - dFrac) / m_iNumPositions) * 100;
-         sLine.Format(">0 CP loss: %i/%i; %.2f%% (std error %.2f)", m_i0CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
+         sLine.Format(_LSA( IDS_CP_LOSS_STD_ERROR1 ), m_i0CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
          sResults += sLine + "\r\n";
       }
       //>10 CP loss
       {
          double dFrac = ((double)m_i10CPLoss / (double)m_iNumPositions);
          double dStdError = sqrt(dFrac * (1 - dFrac) / m_iNumPositions) * 100;
-         sLine.Format(">10 CP loss: %i/%i; %.2f%% (std error %.2f)", m_i10CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
+         sLine.Format(_LSA( IDS_CP_LOSS_STD_ERROR6 ), m_i10CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
          sResults += sLine + "\r\n";
       }
       //>25 CP loss
       {
          double dFrac = ((double)m_i25CPLoss / (double)m_iNumPositions);
          double dStdError = sqrt(dFrac * (1 - dFrac) / m_iNumPositions) * 100;
-         sLine.Format(">25 CP loss: %i/%i; %.2f%% (std error %.2f)", m_i25CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
+         sLine.Format(_LSA( IDS_CP_LOSS_STD_ERROR2 ), m_i25CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
          sResults += sLine + "\r\n";
       }
       //>50 CP loss
       {
          double dFrac = ((double)m_i50CPLoss / (double)m_iNumPositions);
          double dStdError = sqrt(dFrac * (1 - dFrac) / m_iNumPositions) * 100;
-         sLine.Format(">50 CP loss: %i/%i; %.2f%% (std error %.2f)", m_i50CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
+         sLine.Format(_LSA( IDS_CP_LOSS_STD_ERROR3 ), m_i50CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
          sResults += sLine + "\r\n";
       }
       //>100 CP loss
       {
          double dFrac = ((double)m_i100CPLoss / (double)m_iNumPositions);
          double dStdError = sqrt(dFrac * (1 - dFrac) / m_iNumPositions) * 100;
-         sLine.Format(">100 CP loss: %i/%i; %.2f%% (std error %.2f)", m_i100CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
+         sLine.Format(_LSA( IDS_CP_LOSS_STD_ERROR4 ), m_i100CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
          sResults += sLine + "\r\n";
       }
       //>200 CP loss
       {
          double dFrac = ((double)m_i200CPLoss / (double)m_iNumPositions);
          double dStdError = sqrt(dFrac * (1 - dFrac) / m_iNumPositions) * 100;
-         sLine.Format(">200 CP loss: %i/%i; %.2f%% (std error %.2f)", m_i200CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
+         sLine.Format(_LSA( IDS_CP_LOSS_STD_ERROR7 ), m_i200CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
          sResults += sLine + "\r\n";
       }
       //>500 CP loss
       {
          double dFrac = ((double)m_i500CPLoss / (double)m_iNumPositions);
          double dStdError = sqrt(dFrac * (1 - dFrac) / m_iNumPositions) * 100;
-         sLine.Format(">500 CP loss: %i/%i; %.2f%% (std error %.2f)", m_i500CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
+         sLine.Format(_LSA( IDS_CP_LOSS_STD_ERROR ), m_i500CPLoss, m_iNumPositions, dFrac*100.0, dStdError);
          sResults += sLine + "\r\n";
       }
 
-      sLine.Format("CP loss mean %.2f, std deviation %.2f", m_dAvgCentipawnLoss,m_dCentipawnLossStdDeviation);
+      sLine.Format(_LSA( IDS_CP_LOSS_MEAN_STD_DEVIATION ), m_dAvgCentipawnLoss,m_dCentipawnLossStdDeviation);
       sResults += sLine + "\r\n";
    }
    return sResults;

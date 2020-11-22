@@ -26,6 +26,8 @@
 #include "Analysis.h"
 #include "AnalysisDlg.h"
 #include "ResultsDlg.h"
+#include "ResString.h"
+#include "strings/PGN_Spy.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -71,10 +73,7 @@ BOOL CAboutDlg::OnInitDialog()
 {
    CDialog::OnInitDialog();
 
-   m_sCredits = "This project would have been much more difficult without the contributions of several different people.\r\n"
-                "I would especially like to thank David Barnes for the use of uci-analyser and pgn-extract,\r\n"
-                "Ben Bryant of firstobject.com for the use of CMarkup,\r\n"
-                "and LegoPirateSenior and others who gave advice and/or contributed to testing.\r\n";
+   m_sCredits = _LSA( IDS_THIS_PROJECT_WOULD_HAVE_BEEN_MUCH_MORE );
    UpdateData(FALSE);
 
    return TRUE;  // return TRUE  unless you set the focus to a control
@@ -255,7 +254,7 @@ bool CPGNSpyDlg::ConvertFileForAnalysis(CString OUT &sConvertedFile)
    CFile vFile;
    if (!vFile.Open(sConvertedFile, CFile::modeCreate | CFile::modeWrite))
    {
-      MessageBox("Failed to create temporary output file.","PGN Spy", MB_ICONEXCLAMATION);
+      MessageBox(_LSA( IDS_FAILED_TO_CREATE_TEMPORARY_OUTPUT ),_LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return false;
    }
    vFile.Close();
@@ -270,7 +269,7 @@ bool CPGNSpyDlg::ConvertFileForAnalysis(CString OUT &sConvertedFile)
    if (!CreateProcess(GetConverterFilePath(), sCommandLine.GetBuffer(), NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS, NULL, NULL, &vStartupInfo, &vProcessInfo))
    {
       sCommandLine.ReleaseBuffer();
-      MessageBox("Failed to launch converter.  Please ensure it is in the same folder as PGN Spy, with the file name \"pgn-extract.exe\".","PGN Spy", MB_ICONEXCLAMATION);
+      MessageBox(_LSA( IDS_FAILED_TO_LAUNCH_CONVERTER_PLEASE ),_LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return false;
    }
    sCommandLine.ReleaseBuffer();
@@ -289,14 +288,14 @@ void CPGNSpyDlg::OnBnClickedRunanalysis()
    //validate file paths
    if (!PathFileExists(m_sInputFile))
    {
-      MessageBox("The specified input file does not exist.", "PGN Spy", MB_ICONEXCLAMATION);
+      MessageBox(_LSA( IDS_THE_SPECIFIED_INPUT_FILE_DOES_NOT ), _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return;
    }
 
    CString sTemporaryFile;
    if (!ConvertFileForAnalysis(sTemporaryFile))
    {
-      MessageBox("Failed to convert the pgn file into the appropriate format for analysis.","PGN Spy", MB_ICONEXCLAMATION);
+      MessageBox(_LSA( IDS_FAILED_TO_CONVERT_THE_PGN_FILE_INTO_THE ),_LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return;
    }
 
@@ -311,7 +310,7 @@ void CPGNSpyDlg::OnBnClickedRunanalysis()
 
    if (vAnalyserDlg.m_avGames.GetSize() == 0)
    {
-      MessageBox("No results to display.", "PGN Spy", MB_ICONEXCLAMATION);
+      MessageBox(_LSA( IDS_NO_RESULTS_TO_DISPLAY ), _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return;
    }
    if (vAnalyserDlg.m_bCancelled)
@@ -330,9 +329,9 @@ void CPGNSpyDlg::OnBnClickedSavesettings()
       return;
 
    if (!m_vEngineSettings.SaveSettingsToRegistry())
-      MessageBox("Failed to save settings.", "PGN Spy", MB_ICONEXCLAMATION);
+      MessageBox(_LSA( IDS_FAILED_TO_SAVE_SETTINGS ), _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
    else
-      MessageBox("Settings saved.", "PGN Spy", MB_ICONINFORMATION);
+      MessageBox(_LSA( IDS_SETTINGS_SAVED ), _LSA( IDS_PGN_SPY ), MB_ICONINFORMATION);
 }
 
 bool CPGNSpyDlg::ValidateSettings()
@@ -342,13 +341,13 @@ bool CPGNSpyDlg::ValidateSettings()
 
    if (m_vEngineSettings.m_iMinTime > m_vEngineSettings.m_iMaxTime)
    {
-      MessageBox("The minimum time for analysis must not exceed the maximum time.", "PGN Spy", MB_ICONEXCLAMATION);
+      MessageBox(_LSA( IDS_THE_MINIMUM_TIME_FOR_ANALYSIS_MUST_NOT ), _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return false;
    }
 
    if (!PathFileExists(m_vEngineSettings.m_sEnginePath))
    {
-      MessageBox("The specified engine does not exist.", "PGN Spy", MB_ICONEXCLAMATION);
+      MessageBox(_LSA( IDS_THE_SPECIFIED_ENGINE_DOES_NOT_EXIST ), _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return false;
    }
 
@@ -356,7 +355,7 @@ bool CPGNSpyDlg::ValidateSettings()
    GetSystemInfo(&vSysInfo);
    if (m_vEngineSettings.m_iNumThreads > (int)vSysInfo.dwNumberOfProcessors)
    {
-      MessageBox("You have entered more threads than the number of processors present in your system.", "PGN Spy", MB_ICONEXCLAMATION);
+      MessageBox(_LSA( IDS_YOU_HAVE_ENTERED_MORE_THREADS_THAN_THE ), _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return false;
    }
 
@@ -365,114 +364,75 @@ bool CPGNSpyDlg::ValidateSettings()
 
 void CPGNSpyDlg::OnBnClickedHelpplayer()
 {
-   CString sMessage = "If a player name is entered, statistics for the specified player will be reported.  Games excluding "
-                      "this player will be ignored.\n\nIf no player name is entered, aggregate statistics for all players "
-                      "will be reported.  This is useful for establishing baselines.";
-   MessageBox(sMessage, "PGN Spy", MB_ICONINFORMATION);
+   CString sMessage = _LSA( IDS_IF_PLAYER_NAME_IS_ENTERED_STATISTICS );
+   MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONINFORMATION);
 }
 
 void CPGNSpyDlg::OnBnClickedHelpdepth()
 {
-   CString sMessage = "Specify the minimum number of plies to search for each position.  A ply is half of a move; i.e. "
-                      "one white move, or one black move.\n\nIf this depth is not reached within the minimum time, the "
-                      "search will continue until either this depth is reached or the maximum time has been reached.";
-   MessageBox(sMessage, "PGN Spy", MB_ICONINFORMATION);
+   CString sMessage = _LSA( IDS_SPECIFY_THE_MINIMUM_NUMBER_OF_PLIES_TO );
+   MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONINFORMATION);
 }
 
 void CPGNSpyDlg::OnBnClickedHelpbookdepth()
 {
-   CString sMessage = "Specify the number of opening moves to exclude.  A move consists of one white move and one black "
-                      "move, so entering five means ignoring five moves for each side.\n"
-                      "\n"
-                      "Opening moves are better excluded from calculations, as a player who has studied an opening may "
-                      "well be able to reproduce main-line moves from memory, without the use of an engine.  Also, static "
-                      "resources such as books and databases are usually allowed in correspondence chess, so even a weak "
-                      "player may legitimately play main-line moves early in the game without the use of an engine.";
-   MessageBox(sMessage, "PGN Spy", MB_ICONINFORMATION);
+   CString sMessage = _LSA( IDS_SPECIFY_THE_NUMBER_OF_OPENING_MOVES_TO );
+   MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONINFORMATION);
 }
 
 void CPGNSpyDlg::OnBnClickedHelpthreads()
 {
-   CString sMessage = "Specify the number of threads to use for analysis.\n\nTo aid consistency of results, the engine "
-                      "will only be allowed to use a single thread for each position.  However, if there are multiple "
-                      "games being analysed on a multi-core machine, several games may be processed simultaneously to "
-                      "enable analysis to be completed more quickly.\n\nNote: if you leave this at the default value, "
-                      "this will monopolise all available processing power.  If you want to be able to use your computer "
-                      "for other purposes while this is running, it is recommended that you decrease this value.\n"
-                      "\n"
-                      "Also note that the architecture of chess engines is not usually very well suited to hyperthreading.  "
-                      "It is therefore recommended that this not be set to a number larger than the number of physical cores "
-                      "in your machine.\n"
-                      "\n";
-                      "This number can be adjusted while analysis is running.";
-   MessageBox(sMessage, "PGN Spy", MB_ICONINFORMATION);
+   CString sMessage = _LSA( IDS_SPECIFY_THE_NUMBER_OF_THREADS_TO_USE );
+                      _LSA( IDS_THIS_NUMBER_CAN_BE_ADJUSTED_WHILE );
+   MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONINFORMATION);
 }
 
 void CPGNSpyDlg::OnBnClickedHelpmintime()
 {
-   CString sMessage = "Specify the minimum time (in milliseconds) to spend analysing each position.";
-   MessageBox(sMessage, "PGN Spy", MB_ICONINFORMATION);
+   CString sMessage = _LSA( IDS_SPECIFY_THE_MINIMUM_TIME_IN );
+   MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONINFORMATION);
 }
 
 void CPGNSpyDlg::OnBnClickedHelpmaxtime()
 {
-   CString sMessage = "Specify the maximum time (in milliseconds) to spend analysing each position.  This will force "
-                      "analysis to stop, even if the minimum search depth has not yet been reached.";
-   MessageBox(sMessage, "PGN Spy", MB_ICONINFORMATION);
+   CString sMessage = _LSA( IDS_SPECIFY_THE_MAXIMUM_TIME_IN );
+   MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONINFORMATION);
 }
 
 void CPGNSpyDlg::OnBnClickedHelpphashsize()
 {
-   CString sMessage = "Specify the size of the engine's memory cache (in MB).\n"
-                      "\n"
-                      "See documentation for your engine for optimal values for this setting.\n"
-                      "\n"
-                      "Note: if using multiple threads, remember that each thread will have its own hash.  As this is "
-                      "stored in memory, it is recommended that you ensure that the total hash size for threads does "
-                      "not exceed the RAM that is physically present on your machine; you should also leave sufficient "
-                      "for the operating system and any other software currently running.";
-   MessageBox(sMessage, "PGN Spy", MB_ICONINFORMATION);
+   CString sMessage = _LSA( IDS_SPECIFY_THE_SIZE_OF_THE_ENGINE_MEMORY );
+   MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONINFORMATION);
 }
 
 void CPGNSpyDlg::OnBnClickedForcedmovehelp()
 {
-   CString sMessage = "For T1/T2/T3/etc. analysis, moves where the next-best move are evaluated to be worse than the "
-                      "move in question by more than the specified threshold will be excluded from analysis.  This avoids "
-                      "flagging obvious recaptures and other moves that a strong player would usually be expected to find.  "
-                      "Values are in centipawns.";
-   MessageBox(sMessage, "PGN Spy", MB_ICONINFORMATION);
+   CString sMessage = _LSA( IDS_FOR_ETC_ANALYSIS_MOVES_WHERE_THE_NEXT );
+   MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONINFORMATION);
 }
 
 void CPGNSpyDlg::OnBnClickedUnclearpositionhelp()
 {
-   CString sMessage = "For T1/T2/T3/etc. analysis, moves where the next-best move is evaluated to be worse than the "
-                      "first-choice move by more than the specified threshold will be excluded from analysis.  Values "
-                      "are in centipawns.";
-   MessageBox(sMessage, "PGN Spy", MB_ICONINFORMATION);
+   CString sMessage = _LSA( IDS_FOR_ETC_ANALYSIS_MOVES_WHERE_THE_NEXT1 );
+   MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONINFORMATION);
 }
 
 void CPGNSpyDlg::OnBnClickedEqualpositionhelp()
 {
-   CString sMessage = "Positions where neither side is ahead by more than the specified threshold will be analysed.  "
-                      "This is to help detect cheaters who stop cheating once they are ahead.\n\nThese results will be "
-                      "reported separately from those for losing positions.";
-   MessageBox(sMessage, "PGN Spy", MB_ICONINFORMATION);
+   CString sMessage = _LSA( IDS_POSITIONS_WHERE_NEITHER_SIDE_IS_AHEAD );
+   MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONINFORMATION);
 }
 
 void CPGNSpyDlg::OnBnClickedLosingthresholdhelp()
 {
-   CString sMessage = "Positions where the player behind by more than the equal position threshold and less than the "
-                      "losing position threshold will be analysed.  This is to help detect cheaters who only cheat once "
-                      "they start to lose.\n\nThese results will be reported separately from those for equal positions.";
-   MessageBox(sMessage, "PGN Spy", MB_ICONINFORMATION);
+   CString sMessage = _LSA( IDS_POSITIONS_WHERE_THE_PLAYER_BEHIND_BY );
+   MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONINFORMATION);
 }
 
 void CPGNSpyDlg::OnBnClickedNumvariationshelp()
 {
-   CString sMessage = "Specify the number of top engine moves to be compared to the actual move played in each position.  "
-                      "This is to help detect cheaters who regularly play a second-choice move, or who use a different "
-                      "engine or engine settings.";
-   MessageBox(sMessage, "PGN Spy", MB_ICONINFORMATION);
+   CString sMessage = _LSA( IDS_SPECIFY_THE_NUMBER_OF_TOP_ENGINE_MOVES );
+   MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONINFORMATION);
 }
 
 void CPGNSpyDlg::OnBnClickedLoadresults()
@@ -484,7 +444,7 @@ void CPGNSpyDlg::OnBnClickedLoadresults()
    CEngineSettings vEngineSettings;
    if (!LoadGameArrayFromFile(vFileDialog.GetPathName(), avGames, vEngineSettings))
    {
-      MessageBox(_T("Failed to load game file."), _T("PGN Spy"), MB_ICONEXCLAMATION);
+      MessageBox(_LSA( IDS_FAILED_TO_LOAD_GAME_FILE ), _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return;
    }
 

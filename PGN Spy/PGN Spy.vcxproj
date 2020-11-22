@@ -215,8 +215,13 @@
     <ClInclude Include="PGN Spy.h" />
     <ClInclude Include="PGN SpyDlg.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResString.h" />
     <ClInclude Include="ResultsDlg.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="strings\Analysis.h" />
+    <ClInclude Include="strings\AnalysisDlg.h" />
+    <ClInclude Include="strings\PGN_Spy.h" />
+    <ClInclude Include="strings\ResultDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\PGN Spy.ico" />
@@ -226,6 +231,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\PGNSpy.rc2" />
+    <None Include="strings\Analysis.rc2" />
+    <None Include="strings\AnalysisDlg.rc2" />
+    <None Include="strings\PGN_Spy.rc2" />
+    <None Include="strings\ResultDlg.rc2" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\ReadMe.txt" />

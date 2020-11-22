@@ -1,0 +1,29 @@
+// Lingobit Extractor Resource Script
+
+#include "PGN_Spy.h"
+#include "AnalysisDlg.h"
+
+STRINGTABLE
+BEGIN
+    IDS_ARE_YOU_SURE_YOU_WISH_TO_CANCEL "Are you sure you wish to cancel?"
+    IDS_FAILED_TO_OPEN_CONVERTED_PGN_FOR "Failed to open converted PGN for analysis."
+    IDS_READING_PGN_FILE    "Reading pgn file..."
+    IDS_NO_GAMES_TO_ANALYSE_IF_YOU_HAVE_ENTERED "No games to analyse.  If you have entered a player name, please ensure it is spelled correctly."
+    IDS_CREATING_TEMPORARY_FILES "Creating temporary files...\r\n"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_ENCOUNTERED_GAME_WITH_ERROR "Encountered game with error"
+    IDS_ANALYSING_GAMES_CURRENTLY_ACTIVE_OF "Analysing games: %i currently active, %i of %i completed...\r\n"
+    IDS_FINISHED_GAME       "Finished game: %s v %s"
+    IDS_ANALYSIS_CANCELLED  "Analysis cancelled."
+    IDS_ERRORS_WERE_ENCOUNTERED_ON_GAMES_OUT "Errors were encountered on %i games out of a total %i to be analysed."
+    IDS_ANALYSIS_OF_GAMES_COMPLETED_WITH_NO "Analysis of %i games completed with no errors."
+    IDS_FAILED_TO_CREATE_PIPE_TO_COMMUNICATE "Failed to create pipe to communicate with analyser."
+    IDS_FAILED_SET_UP_PIPE_TO_COMMUNICATE_WITH "Failed set up pipe to communicate with analyser."
+    IDS_FAILED_TO_LAUNCH_ANALYSER_PLEASE "Failed to launch analyser.  Please ensure it is in the same folder as PGN Spy, with the file name ""pgn-extract.exe""."
+    IDS_NUMBER_OF_THREADS_WILL_BE_DECREASED_TO "Number of threads will be decreased to %i as active threads are completed.\r\n"
+    IDS_ANALYSIS_WILL_BE_PAUSED_WHEN_ALL "Analysis will be paused when all currently active threads are completed.\r\n"
+    IDS_NUMBER_OF_THREADS_INCREASED_TO "Number of threads increased to %i.\r\n"
+END

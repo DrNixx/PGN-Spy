@@ -1,0 +1,37 @@
+// Lingobit Extractor Resource Script
+
+#include "PGN_Spy.h"
+#include "ResultDlg.h"
+
+STRINGTABLE
+BEGIN
+    IDS_ETC_THESE_STATS_DISPLAY_INFORMATION "T1/T2/T3/etc: These stats display information about how often a player's moves matched the top one, two, three, etc., engine moves.  A high number could be an indicator of possible engine use.\n\n>N CP Loss: This indicates how often a player's moves were worse than the top engine move by the specified value (in centipawns).  A low number could be an indicator of possible engine use.\n\nCP loss: This indicates how much worse a player's moves were when compared to the top engine move. A low number could be an indicator of possible engine use.  Values are in centipawns (1/100 of a pawn).\n\nThese values MUST NOT be taken as evidence of cheating on their own, without proper statistical analysis, comparison to appropriate benchmarks, and consideration of other evidence.\n\nBinomial confidence intervals can be calculated at :\nhttp://statpages.info/confint.html#Binomial"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_FAILED_TO_CREATE_OUTPUT_FILE "Failed to create output file."
+    IDS_FILE_SAVED          "File saved."
+    IDS_GAMES               "%s, %i games\r\n\r\n"
+    IDS_GAMES1              "%i games\r\n\r\n"
+    IDS_UNDECIDED_POSITIONS "UNDECIDED POSITIONS\r\n"
+    IDS_LOSING_POSITIONS    "\r\nLOSING POSITIONS\r\n"
+    IDS_WINNING_POSITIONS   "\r\nWINNING POSITIONS\r\n"
+    IDS_POST_LOSING_POSITIONS "\r\nPOST-LOSING POSITIONS\r\n"
+    IDS_IF_PLAYER_NAME_IS_ENTERED_STATISTICS1 "If a player name is entered, statistics for all moves played against the specified player will be reported.  Games excluding this player will be ignored."
+    IDS_IF_AN_EVENT_NAME_IS_ENTERED_STATISTICS "If an event name is entered, statistics for moves played during the specified event will be reported."
+    IDS_MOVES_BEFORE_THE_SPECIFIED_MOVE "Moves before the specified move number will be excluded from analysis.  This must be greater than the book depth specified in engine settings when the analysis was run.\n\nNote: this counts one move for each side as a single move."
+    IDS_MOVES_AFTER_THE_SPECIFIED_MOVE_NUMBER "Moves after the specified move number will be excluded from analysis.\n\nNote: this counts one move for each side as a single move."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_RESULTS_SAVED       "Results saved."
+    IDS_FAILED_TO_SAVE_RESULTS "Failed to save results."
+    IDS_THE_MOVE_RANGE_MINIMUM_MUST_BE_GREATER "The move range minimum must be greater than the engine book depth."
+    IDS_THE_MOVE_RANGE_MINIMUM_MUST_NOT_BE "The move range minimum must not be greater than the move range maximum."
+    IDS_THE_EQUAL_POSITION_THRESHOLD_MUST_NOT "The equal position threshold must not exceed the losing position threshold."
+    IDS_LOSING_POSITIONS_ARE_POSITIONS_WHERE "Losing positions are positions where the player in question is losing by more than the undecided position threshold but less than the losing position threshold.  Winning positions are positions where the player in question is winning by more than the undecided position threshold but less than the losing position threshold.  Post-losing positions are positions where the player in question was losing earlier in the game.  Positions where either player is losing by more than the losing position threshold will always be excluded."
+    IDS_ENGINE_SETTING_COMPATIBILITY "Engine setting compatibility warnings were encountered.  Do you wish to continue?\r\n\r\n"
+    IDS_ANALYSIS_RESULTS_SUCCESSFULLY "Analysis results successfully loaded and merged."
+END

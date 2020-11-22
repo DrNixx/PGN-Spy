@@ -27,6 +27,9 @@
 #include "PGN Spy.h"
 #include "AnalysisDlg.h"
 #include "afxdialogex.h"
+#include "ResString.h"
+#include "strings/PGN_Spy.h"
+#include "strings/AnalysisDlg.h"
 
 
 // CAnalysisDlg dialog
@@ -113,7 +116,7 @@ void CAnalysisDlg::OnBnClickedOK()
 
 void CAnalysisDlg::OnBnClickedCancel()
 {
-   if (IDNO == MessageBox("Are you sure you wish to cancel?", "PGN Spy", MB_ICONQUESTION | MB_YESNO))
+   if (IDNO == MessageBox(_LSA( IDS_ARE_YOU_SURE_YOU_WISH_TO_CANCEL ), _LSA( IDS_PGN_SPY ), MB_ICONQUESTION | MB_YESNO))
       return;
    m_bCancelled = true;
 
@@ -142,12 +145,12 @@ bool CAnalysisDlg::ProcessGames()
    CStdioFile vConvertedPGN;
    if (!vConvertedPGN.Open(m_sConvertedPGN, CFile::modeRead))
    {
-      CString sMessage = "Failed to open converted PGN for analysis.";
-      MessageBox(sMessage, "PGN Spy", MB_ICONEXCLAMATION);
+      CString sMessage = _LSA( IDS_FAILED_TO_OPEN_CONVERTED_PGN_FOR );
+      MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return false;
    }
 
-   m_sStatusHistory = "Reading pgn file...";
+   m_sStatusHistory = _LSA( IDS_READING_PGN_FILE );
    m_sStatus = m_sStatusHistory;
    m_bStatusChanged = true;
    UpdateDisplay();
@@ -211,12 +214,12 @@ bool CAnalysisDlg::ProcessGames()
 
    if (avGamePGNs.GetSize() == 0)
    {
-      CString sMessage = "No games to analyse.  If you have entered a player name, please ensure it is spelled correctly.";
-      MessageBox(sMessage, "PGN Spy", MB_ICONINFORMATION);
+      CString sMessage = _LSA( IDS_NO_GAMES_TO_ANALYSE_IF_YOU_HAVE_ENTERED );
+      MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONINFORMATION);
       return true;
    }
 
-   m_sStatusHistory = "Creating temporary files...\r\n" + m_sStatusHistory;
+   m_sStatusHistory = _LSA( IDS_CREATING_TEMPORARY_FILES ) + m_sStatusHistory;
    m_sStatus = m_sStatusHistory;
    m_bStatusChanged = true;
    UpdateDisplay();
@@ -227,8 +230,8 @@ bool CAnalysisDlg::ProcessGames()
       CFile vFile;
       if (!vFile.Open(avGamePGNs[i].m_sFileName, CFile::modeCreate | CFile::modeWrite))
       {
-         CString sMessage = "Failed to create temporary output file.";
-         MessageBox(sMessage, "PGN Spy", MB_ICONEXCLAMATION);
+         CString sMessage = _LSA( IDS_FAILED_TO_CREATE_TEMPORARY_OUTPUT );
+         MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
          return false;
       }
       vFile.Write(avGamePGNs[i].m_sPGNText.GetBuffer(), avGamePGNs[i].m_sPGNText.GetLength());
@@ -269,7 +272,7 @@ bool CAnalysisDlg::ProcessGames()
    while ((iNextGame < avGamePGNs.GetSize() || bThreadsStillRunning) && !m_bCancelled)
    {
       CString sTopLine;
-      sTopLine.Format("Analysing games: %i currently active, %i of %i completed...\r\n", iActiveProcesses, iNextGame - iActiveProcesses, avGamePGNs.GetSize());
+      sTopLine.Format(_LSA( IDS_ANALYSING_GAMES_CURRENTLY_ACTIVE_OF ), iActiveProcesses, iNextGame - iActiveProcesses, avGamePGNs.GetSize());
       m_sStatus = sTopLine + m_sStatusHistory;
       UpdateDisplay();
 
@@ -325,14 +328,14 @@ bool CAnalysisDlg::ProcessGames()
             if (abErrors[iCurThread])
             {
                m_iGamesWithErrors++; //skip games with errors
-               sStatusLine = "Encountered game with error";
+               sStatusLine = _LSA( IDS_ENCOUNTERED_GAME_WITH_ERROR );
             }
             else
             {
                if (ProcessOutput(asResults[iCurThread]))
-                  sStatusLine.Format("Finished game: %s v %s", m_avGames[m_avGames.GetUpperBound()].m_sWhite, m_avGames[m_avGames.GetUpperBound()].m_sBlack);
+                  sStatusLine.Format(_LSA( IDS_FINISHED_GAME ), m_avGames[m_avGames.GetUpperBound()].m_sWhite, m_avGames[m_avGames.GetUpperBound()].m_sBlack);
                else
-                  sStatusLine = "Encountered game with error";
+                  sStatusLine = _LSA( IDS_ENCOUNTERED_GAME_WITH_ERROR );
             }
             m_sStatusHistory = sStatusLine + "\r\n" + m_sStatusHistory;
             m_bStatusChanged = true;
@@ -424,12 +427,12 @@ bool CAnalysisDlg::ProcessGames()
 
    CString sMessage;
    if (m_bCancelled)
-      sMessage = "Analysis cancelled.";
+      sMessage = _LSA( IDS_ANALYSIS_CANCELLED );
    else if (m_iGamesWithErrors > 0)
-      sMessage.Format("Errors were encountered on %i games out of a total %i to be analysed.", m_iGamesWithErrors, avGamePGNs.GetSize());
+      sMessage.Format(_LSA( IDS_ERRORS_WERE_ENCOUNTERED_ON_GAMES_OUT ), m_iGamesWithErrors, avGamePGNs.GetSize());
    else
-      sMessage.Format("Analysis of %i games completed with no errors.", avGamePGNs.GetSize());
-   MessageBox(sMessage, "PGN Spy", MB_ICONEXCLAMATION);
+      sMessage.Format(_LSA( IDS_ANALYSIS_OF_GAMES_COMPLETED_WITH_NO ), avGamePGNs.GetSize());
+   MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
 
    //caller will display results
    return true;
@@ -495,42 +498,42 @@ bool CAnalysisDlg::LaunchAnalyser(CGamePGN vGamePGN, int iCurThread)
    //create std in pipe for writing to child process
    if (!CreatePipe(&m_ahChildStdInRead[iCurThread], &m_ahChildStdInWrite[iCurThread], &vAttrib, 0))
    {
-      CString sMessage = "Failed to create pipe to communicate with analyser.";
-      MessageBox(sMessage, "PGN Spy", MB_ICONEXCLAMATION);
+      CString sMessage = _LSA( IDS_FAILED_TO_CREATE_PIPE_TO_COMMUNICATE );
+      MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return false;
    }
    if (!SetHandleInformation(m_ahChildStdInWrite[iCurThread], HANDLE_FLAG_INHERIT, 0))
    {
-      CString sMessage = "Failed set up pipe to communicate with analyser.";
-      MessageBox(sMessage, "PGN Spy", MB_ICONEXCLAMATION);
+      CString sMessage = _LSA( IDS_FAILED_SET_UP_PIPE_TO_COMMUNICATE_WITH );
+      MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return false;
    }
 
    //create std out pipe for reading from child process
    if (!CreatePipe(&m_ahChildStdOutRead[iCurThread], &m_ahChildStdOutWrite[iCurThread], &vAttrib, 0))
    {
-      CString sMessage = "Failed to create pipe to communicate with analyser.";
-      MessageBox(sMessage, "PGN Spy", MB_ICONEXCLAMATION);
+      CString sMessage = _LSA( IDS_FAILED_TO_CREATE_PIPE_TO_COMMUNICATE );
+      MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return false;
    }
    if (!SetHandleInformation(m_ahChildStdOutRead[iCurThread], HANDLE_FLAG_INHERIT, 0))
    {
-      CString sMessage = "Failed set up pipe to communicate with analyser.";
-      MessageBox(sMessage, "PGN Spy", MB_ICONEXCLAMATION);
+      CString sMessage = _LSA( IDS_FAILED_SET_UP_PIPE_TO_COMMUNICATE_WITH );
+      MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return false;
    }
 
    //create std err pipe for reading from child process
    if (!CreatePipe(&m_ahChildStdErrRead[iCurThread], &m_ahChildStdErrWrite[iCurThread], &vAttrib, 0))
    {
-      CString sMessage = "Failed to create pipe to communicate with analyser.";
-      MessageBox(sMessage, "PGN Spy", MB_ICONEXCLAMATION);
+      CString sMessage = _LSA( IDS_FAILED_TO_CREATE_PIPE_TO_COMMUNICATE );
+      MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return false;
    }
    if (!SetHandleInformation(m_ahChildStdErrRead[iCurThread], HANDLE_FLAG_INHERIT, 0))
    {
-      CString sMessage = "Failed set up pipe to communicate with analyser.";
-      MessageBox(sMessage, "PGN Spy", MB_ICONEXCLAMATION);
+      CString sMessage = _LSA( IDS_FAILED_SET_UP_PIPE_TO_COMMUNICATE_WITH );
+      MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return false;
    }
 
@@ -573,8 +576,8 @@ bool CAnalysisDlg::LaunchAnalyser(CGamePGN vGamePGN, int iCurThread)
    {
       sCommandLine.ReleaseBuffer();
       DWORD dwError = GetLastError();
-      CString sMessage = "Failed to launch analyser.  Please ensure it is in the same folder as PGN Spy, with the file name \"pgn-extract.exe\".";
-      MessageBox(sMessage, "PGN Spy", MB_ICONEXCLAMATION);
+      CString sMessage = _LSA( IDS_FAILED_TO_LAUNCH_ANALYSER_PLEASE );
+      MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
       return false;
    }
    sCommandLine.ReleaseBuffer();
@@ -593,8 +596,8 @@ bool CAnalysisDlg::ProcessOutput(CString sOutput)
       CFile vFile;
       if (!vFile.Open(sFileName, CFile::modeCreate | CFile::modeWrite))
       {
-         CString sMessage = "Failed to create temporary output file.";
-         MessageBox(sMessage, "PGN Spy", MB_ICONEXCLAMATION);
+         CString sMessage = _LSA( IDS_FAILED_TO_CREATE_TEMPORARY_OUTPUT );
+         MessageBox(sMessage, _LSA( IDS_PGN_SPY ), MB_ICONEXCLAMATION);
          return false;
       }
 
@@ -625,9 +628,9 @@ void CAnalysisDlg::OnBnClickedDecreasethreads()
    }
    CString sStatusLine;
    if (m_iTargetThreads > 0)
-      sStatusLine.Format("Number of threads will be decreased to %i as active threads are completed.\r\n", m_iTargetThreads);
+      sStatusLine.Format(_LSA( IDS_NUMBER_OF_THREADS_WILL_BE_DECREASED_TO ), m_iTargetThreads);
    else
-      sStatusLine = "Analysis will be paused when all currently active threads are completed.\r\n";
+      sStatusLine = _LSA( IDS_ANALYSIS_WILL_BE_PAUSED_WHEN_ALL );
    m_sStatusHistory = sStatusLine + m_sStatusHistory;
    m_bStatusChanged = true;
    UpdateThreadControlButtons();
@@ -643,7 +646,7 @@ void CAnalysisDlg::OnBnClickedIncreasethreads()
       m_iTargetThreads = m_iMaxThreads;
    }
    CString sStatusLine;
-   sStatusLine.Format("Number of threads increased to %i.\r\n", m_iTargetThreads);
+   sStatusLine.Format(_LSA( IDS_NUMBER_OF_THREADS_INCREASED_TO ), m_iTargetThreads);
    m_sStatusHistory = sStatusLine + m_sStatusHistory;
    m_bStatusChanged = true;
    UpdateThreadControlButtons();

@@ -1,0 +1,29 @@
+// Lingobit Extractor Resource Script
+
+#include "PGN_Spy.h"
+#include "Analysis.h"
+
+STRINGTABLE
+BEGIN
+    IDS_THE_NUMBER_OF_VARIATIONS_DOES_NOT "The number of variations does not match.  Only the lower number will be preserved."
+    IDS_THE_BOOK_DEPTH_SETTING_DOES_NOT_MATCH "The book depth setting does not match."
+    IDS_THE_SEARCH_DEPTH_AND_OR_TIME_SETTINGS "The search depth and/or time settings do not match."
+    IDS_THE_HASH_SIZE_SETTING_DOES_NOT_MATCH "The hash size setting does not match."
+    IDS_THE_ENGINE_DOES_NOT_MATCH "The engine does not match."
+    IDS_POSITIONS           "Positions: %i"
+    IDS_CP_LOSS_STD_ERROR   ">500 CP loss: %i/%i; %.2f%% (std error %.2f)"
+    IDS_CP_LOSS_MEAN_STD_DEVIATION "CP loss mean %.2f, std deviation %.2f"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_CP_LOSS_STD_ERROR1  ">0 CP loss: %i/%i; %.2f%% (std error %.2f)"
+    IDS_CP_LOSS_STD_ERROR2  ">25 CP loss: %i/%i; %.2f%% (std error %.2f)"
+    IDS_STD_ERROR           "T%i: %i/%i; %.2f%% (std error %.2f)"
+    IDS_CP_LOSS_STD_ERROR3  ">50 CP loss: %i/%i; %.2f%% (std error %.2f)"
+    IDS_CP_LOSS_STD_ERROR4  ">100 CP loss: %i/%i; %.2f%% (std error %.2f)"
+    IDS_CP_LOSS_STD_ERROR5  "=0 CP loss: %i/%i; %.2f%% (std error %.2f)"
+    IDS_CP_LOSS_STD_ERROR6  ">10 CP loss: %i/%i; %.2f%% (std error %.2f)"
+    IDS_CP_LOSS_STD_ERROR7  ">200 CP loss: %i/%i; %.2f%% (std error %.2f)"
+    IDS_STRING1             "T%i: 0/0"
+END

@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Strings Files">
+      <UniqueIdentifier>{fcd2d886-2be7-4fcc-b95a-4e900f04daac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PGN Spy.cpp">
@@ -62,6 +65,21 @@
     <ClInclude Include="AnalysisDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ResString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="strings\Analysis.h">
+      <Filter>Strings Files</Filter>
+    </ClInclude>
+    <ClInclude Include="strings\AnalysisDlg.h">
+      <Filter>Strings Files</Filter>
+    </ClInclude>
+    <ClInclude Include="strings\PGN_Spy.h">
+      <Filter>Strings Files</Filter>
+    </ClInclude>
+    <ClInclude Include="strings\ResultDlg.h">
+      <Filter>Strings Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\PGN Spy.ico">
@@ -75,6 +93,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\PGNSpy.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="strings\Analysis.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="strings\AnalysisDlg.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="strings\PGN_Spy.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="strings\ResultDlg.rc2">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
